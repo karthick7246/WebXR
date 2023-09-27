@@ -16,12 +16,13 @@ public class PlayerSync : MonoBehaviour
         if (View.IsMine)
         {
             Cameras.SetActive(true);
+            GetComponent<WebXRManager>().enabled = true;
         }
         else
         {
             Cameras.SetActive(false);
         }
-        GetComponent<WebXRManager>().enabled = true;
+       
     }
 
    
