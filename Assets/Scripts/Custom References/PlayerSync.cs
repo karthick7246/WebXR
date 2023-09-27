@@ -8,7 +8,7 @@ using WebXR;
 public class PlayerSync : MonoBehaviour
 {
     private PhotonView View;
-    public GameObject  Cameras;
+    public GameObject  Cameras,Avatar;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +16,7 @@ public class PlayerSync : MonoBehaviour
         if (View.IsMine)
         {
             Cameras.SetActive(true);
+            Avatar.SetActive(false);
             //GetComponent<WebXRManager>().enabled = true;
         }
         else
