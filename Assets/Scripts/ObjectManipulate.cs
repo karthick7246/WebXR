@@ -23,6 +23,7 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
 
     void OnMouseDown()
     {
+        Debug.Log("downl");
         if (!photonView.IsMine)
         {
             photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
@@ -72,9 +73,12 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
 
     Camera FindCamera()
     {
+        //Debug.Log(Camera.main);
+        //return Camera.main;
         Camera[] cameras = FindObjectsOfType<Camera>();
         Camera result = null;
         int camerasSum = 0;
+
         foreach (var camera in cameras)
         {
             if (camera.enabled)
@@ -83,6 +87,7 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
                 camerasSum++;
             }
         }
+
         if (camerasSum > 1)
         {
             result = null;
@@ -100,7 +105,7 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
 
     private void FindCameraAndAssign()
     {
-        FindCamera();
+        m_currentCamera = FindCamera();
         if (m_currentCamera != null)
         {
             movementManager.targetCamera = m_currentCamera;

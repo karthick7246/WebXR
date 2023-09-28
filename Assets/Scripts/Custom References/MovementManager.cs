@@ -214,7 +214,7 @@ public class MovementManager : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            Ray ray = targetCamera.ScreenPointToRay(Input.GetTouch(0).position);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -493,7 +493,7 @@ public class MovementManager : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = Camera.main.ScreenPointToRay(pos);
+                Ray ray = targetCamera.ScreenPointToRay(pos);
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
@@ -504,15 +504,15 @@ public class MovementManager : MonoBehaviour
                         toDrag = hit.transform.parent;
                         dragging = true;
 
-                        touchOffset = toDrag.position - Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, Camera.main.WorldToScreenPoint(toDrag.position).z));
+                        touchOffset = toDrag.position - targetCamera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, targetCamera.WorldToScreenPoint(toDrag.position).z));
                     }
                 }
             }
 
             if (dragging && touch.phase == TouchPhase.Moved)
             {
-                Vector3 position = new Vector3(pos.x, pos.y, Camera.main.WorldToScreenPoint(toDrag.position).z);
-                toDrag.position = Camera.main.ScreenToWorldPoint(position) + touchOffset;
+                Vector3 position = new Vector3(pos.x, pos.y, targetCamera.WorldToScreenPoint(toDrag.position).z);
+                toDrag.position = targetCamera.ScreenToWorldPoint(position) + touchOffset;
             }
 
             if (dragging && (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled))

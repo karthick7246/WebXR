@@ -38,7 +38,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         base.OnCreateRoomFailed(returnCode, message);
-        Debug.Log("Failed to Create Room");
+        Debug.Log("Failed to Create Room" + message);
         NewRoom();
     }
 
@@ -66,7 +66,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
 
 
         //PhotonNetwork.Instantiate("Player", SpwanPosition.position, Quaternion.identity);
-         PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
 
     }
 
