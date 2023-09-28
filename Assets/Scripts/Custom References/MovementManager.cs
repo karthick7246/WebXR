@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////
 // AR-Object-Control-Tool -- MovementManager
-// Author: Léo Séry
+// Author: Lï¿½o Sï¿½ry
 // Date created: 30/12/2022
 // Last updated: 17/02/2023
 // Purpose: Allow manipulation of a GameObject in AR with touch input.
@@ -501,7 +501,7 @@ public class MovementManager : MonoBehaviour
                     {
                         if (useElevetionManager)
                             elevationManager.StopAnimation();
-                        toDrag = hit.transform.parent;
+                        toDrag = hit.transform;
                         dragging = true;
 
                         touchOffset = toDrag.position - targetCamera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, targetCamera.WorldToScreenPoint(toDrag.position).z));

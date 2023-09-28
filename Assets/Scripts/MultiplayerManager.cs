@@ -1,22 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Lean.Touch;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+
 public class MultiplayerManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private TextMeshProUGUI PlayerName;
-    // private string NickName;
+    [SerializeField] private LeanFingerDown leanFingerDown;
+    [SerializeField] private LeanSelectByFinger leanSelectByFinger;
+    [SerializeField] private LeanDragTranslate[] leanDragTranslates;
+    [SerializeField] private LeanTwistRotate[] leanTwistRotates;
+    [SerializeField] private LeanPinchScale[] leanPinchScales;
 
     private void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();
     }
+
     public override void OnConnected()
     {
         base.OnConnected();
     }
+
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
@@ -30,11 +37,13 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         Debug.Log("COnnected To Master");
         PhotonNetwork.JoinLobby();
     }
+
     public override void OnDisconnected(DisconnectCause cause)
     {
         base.OnDisconnected(cause);
         Debug.Log("Disconnected");
     }
+
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         base.OnCreateRoomFailed(returnCode, message);
@@ -53,31 +62,35 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
     {
         RoomOptions Rooms = new RoomOptions();
         Rooms.MaxPlayers = 0;
+        Rooms.EmptyRoomTtl = 0;
 
         PhotonNetwork.CreateRoom("Room1", Rooms = null, TypedLobby.Default);
     }
+
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
         Debug.Log("On Joined Room");
-
-
-        //PhotonNetwork.LoadLevel("Forest");
-
-
-        //PhotonNetwork.Instantiate("Player", SpwanPosition.position, Quaternion.identity);
         PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
-
     }
 
+    public void ApplyCurrentCamera(Camera activeCamera)
+    {
+        leanFingerDown.ScreenDepth.Camera = activeCamera;
+        leanSelectByFinger.ScreenQuery.Camera = activeCamera;
+        foreach (var leanDragTranslate in leanDragTranslates)
+        {
+            leanDragTranslate.Camera = activeCamera;
+        }
 
-    //public void NickNameSet()
-    //{
-    //    var Name = FindObjectOfType<Keyboard>().text;
-    //    print(Name.ToString());
-    //    PhotonNetwork.NickName = Name.ToString();
+        foreach (var leanTwistRotate in leanTwistRotates)
+        {
+            leanTwistRotate.Camera = activeCamera;
+        }
 
-    //    PhotonNetwork.JoinRandomRoom();
-
-    //}
+        foreach (var leanPinchScale in leanPinchScales)
+        {
+            leanPinchScale.Camera = activeCamera;
+        }
+    }
 }

@@ -23,18 +23,12 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
 
     void OnMouseDown()
     {
-        Debug.Log("downl");
         if (!photonView.IsMine)
         {
             photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
-
-        }
-        else
-        {
-            FindCameraAndAssign();
-            //FindCurrentCamera();
         }
 
+        FindCameraAndAssign();
     }
 
     private void FindCurrentCamera()
@@ -43,28 +37,18 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
         if (m_currentCamera != null)
         {
             m_screenPoint = m_currentCamera.WorldToScreenPoint(gameObject.transform.position);
-            m_offset = gameObject.transform.position - m_currentCamera.ScreenToWorldPoint(GetMousePosWithScreenZ(m_screenPoint.z));
+            m_offset = gameObject.transform.position -
+                       m_currentCamera.ScreenToWorldPoint(GetMousePosWithScreenZ(m_screenPoint.z));
         }
     }
 
     void OnMouseUp()
     {
-        //m_rigidbody.velocity = m_currentVelocity;
         m_currentCamera = null;
-        movementManager.enabled = false;
+        FindObjectOfType<MultiplayerManager>().ApplyCurrentCamera(m_currentCamera);
     }
 
-    void FixedUpdate()
-    {
-        //if (m_currentCamera != null)
-        //{
-        //    Vector3 currentScreenPoint = GetMousePosWithScreenZ(m_screenPoint.z);
-        //    m_rigidbody.velocity = Vector3.zero;
-        //    m_rigidbody.MovePosition(m_currentCamera.ScreenToWorldPoint(currentScreenPoint) + m_offset);
-        //    m_currentVelocity = (transform.position - m_previousPos) / Time.deltaTime;
-        //    m_previousPos = transform.position;
-        //}
-    }
+   
 
     Vector3 GetMousePosWithScreenZ(float screenZ)
     {
@@ -92,6 +76,7 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
         {
             result = null;
         }
+
         return result;
     }
 
@@ -108,9 +93,7 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
         m_currentCamera = FindCamera();
         if (m_currentCamera != null)
         {
-            movementManager.targetCamera = m_currentCamera;
-            movementManager.enabled = true;
+            FindObjectOfType<MultiplayerManager>().ApplyCurrentCamera(m_currentCamera);
         }
     }
 }
-
