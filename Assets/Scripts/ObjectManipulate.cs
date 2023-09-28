@@ -48,7 +48,7 @@ public class ObjectManipulate : MonoBehaviourPunCallbacks, IOnPhotonViewOwnerCha
 
     void OnMouseUp()
     {
-        m_rigidbody.velocity = m_currentVelocity;
+        //m_rigidbody.velocity = m_currentVelocity;
         m_currentCamera = null;
         movementManager.enabled = false;
     }
